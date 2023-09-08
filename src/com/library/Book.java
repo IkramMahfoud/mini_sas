@@ -1,5 +1,6 @@
 package com.library;
 
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Date;
@@ -87,6 +88,24 @@ public class Book {
            }
        }*/
 
+
+    //display books:
+    public static void  displayAvailableBooks() {
+        ResultSet books = null;
+
+        try {
+            Statement statement = JDBC.main();
+            String query = "SELECT * FROM book WHERE status = 'available'";
+            books = statement.executeQuery(query);
+            while(books.next()){
+                System.out.println(books.getString(1)+" "+books.getString(2));
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }
+
+
     //adding Book:
     public static void addBook() {
         try {
@@ -105,8 +124,9 @@ public class Book {
             System.out.println("enter your author : ");
             author = sc.next();
 
-            String insertQuery = "INSERT INTO book (ISBN, title, author) VALUES " +
-                    "('" + ISBN + "', '" + title + "', '" + author + "')";
+
+            String insertQuery = "INSERT INTO book (ISBN, title, author, status) VALUES " +
+                    "('" + ISBN + "', '" + title + "', '" + author + "', '" + "available" + "')"; //add satuts
 
             int rowsInserted = statement.executeUpdate(insertQuery);
             if (rowsInserted > 0) {
@@ -123,9 +143,16 @@ public class Book {
 
 
     //delete Book:
-    public static void deleteBookByISBN(String ISBN) {
+    public static void deleteBookByISBN() {
         try {
             Statement statement = JDBC.main();
+
+            Scanner sc = new Scanner(System.in);
+            String ISBN= null;
+            System.out.println("\n------------------------------");
+            System.out.println("enter your ISBN : ");
+            ISBN = sc.next();
+
 
             String deleteQuery = "DELETE FROM book WHERE ISBN = '" + ISBN + "'";
 
@@ -175,4 +202,30 @@ public class Book {
             e.printStackTrace();
         }
     }
+
+    //Stats
+    /*public void showStatistics() {
+        Book[] books;
+        int totalBooks = books.size();
+        int availableBooks = 0;
+        int borrowedBooks = 0;
+        int lostBooks = 0;
+
+        for (com.library.Book book : books) {
+            String status = book.getStatus();
+            if (status.equals("disponible")) {
+                availableBooks++;
+            } else if (status.equals("emprunté")) {
+                borrowedBooks++;
+            } else if (status.equals("perdu")) {
+                lostBooks++;
+            }
+        }
+
+        System.out.println("Statistiques de la bibliothèque :");
+        System.out.println("Nombre total de livres : " + totalBooks);
+        System.out.println("Livres disponibles : " + availableBooks);
+        System.out.println("Livres empruntés : " + borrowedBooks);
+        System.out.println("Livres perdus : " + lostBooks);
+    }*/
 }

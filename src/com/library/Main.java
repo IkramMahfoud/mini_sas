@@ -14,6 +14,13 @@ public class Main {
                 case 2:
                     Book.updateBookByISBN();
                     break;
+                case 3:
+                    Book.deleteBookByISBN();
+                    break;
+                case 4:
+                    Book.displayAvailableBooks();
+                    break;
+
                 case 0:
                     System.out.println("Program exited.");
                     break;
@@ -27,18 +34,17 @@ public class Main {
     private static int mainMenu(){
         int selectNum;
         Scanner sc = new Scanner(System.in);
-        System.out.println("\n\nSelect your account type :");
-        System.out.println("__________________________");
+        System.out.println("\n\nSelect your choice :");
+        System.out.println("--------------------");
         System.out.println("1/ Add a new book");
         System.out.println("2/ Edit a book");
         System.out.println("3/ Delete a book");
         System.out.println("4/ Show available books");
         System.out.println("5/ Search a book");// titre ou auteur
         System.out.println("6/ loan book");//et mettre à jour son statut
-        System.out.println("6/ Return book");//mettre à jour son statut
+        System.out.println("7/ Return book");//mettre à jour son statut
         // maybe implement lost book
-        System.out.println("7/ Stats");//rapports statistiques sur les livres disponibles, empruntés et perdus
-
+        System.out.println("8/ Stats");//rapports statistiques sur les livres disponibles, empruntés et perdus
         System.out.println("\n0/ -----Exit-----");
         System.out.println("\nYour choice :");
         selectNum = sc.nextInt();
