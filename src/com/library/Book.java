@@ -12,8 +12,6 @@ public class Book {
     private String author;
     private String ISBN;
     private String status;
-    private String borrowerInfo;
-    private Date dateBorrowed;
 
     //private static ArrayList<com.library.Book> books = new ArrayList<Book>();
 
@@ -54,23 +52,9 @@ public class Book {
         this.status = status;
     }
 
-    public String getBorrowerInfo() {
-        return borrowerInfo;
-    }
 
-    public void setBorrowerInfo(String borrowerInfo) {
-        this.borrowerInfo = borrowerInfo;
-    }
 
-    public Date getDateBorrowed() {
-        return dateBorrowed;
-    }
-
-    public void setDateBorrowed(Date dateBorrowed) {
-        this.dateBorrowed = dateBorrowed;
-    }
-
-    /*public static ResultSet displayAllBooks() {
+    public static ResultSet displayAllBooks() {
         ResultSet books = null;
         try {
             Statement statement = JDBC.main();
@@ -79,14 +63,14 @@ public class Book {
             System.out.println(e);
         }
         return books;
-    }*/
+    }
 
-    /* public static void main(String[] args) throws SQLException {
+    public static void main(String[] args) throws SQLException {
            ResultSet books = displayAllBooks();
            while(books.next()){
                System.out.println(books.getInt(1)+" "+books.getString(2));
            }
-       }*/
+       }
 
 
     //display books:
@@ -228,4 +212,70 @@ public class Book {
         System.out.println("Livres empruntés : " + borrowedBooks);
         System.out.println("Livres perdus : " + lostBooks);
     }*/
+
+
+    //Search:
+    public static void searchMenu(){
+        ResultSet books = null;
+        int selectNum;
+        Scanner sc = new Scanner(System.in);
+        System.out.println("\n\nSelect your choice :");
+        System.out.println("--------------------");
+        System.out.println("1/ Search By Title");
+        System.out.println("2/ Search By Author");
+
+        selectNum = sc.nextInt();
+
+        if (selectNum==1){
+            String selectTitle;
+
+            System.out.println("Enter a Title :");
+            selectTitle = sc.next();
+
+            try {
+                Statement statement = JDBC.main();
+                String query = "SELECT * FROM book WHERE title = '" +selectTitle+ "'";
+                books = statement.executeQuery(query);
+                if(books.next()){
+                    System.out.println(books.getString(1)+" "+books.getString(2));
+                }else {
+                    System.out.println("No book found with the title: " + selectTitle);
+                }
+            } catch (Exception e) {
+                System.out.println(e);
+            }
+
+
+
+        }
+        else if(selectNum==2){
+            String selectAuthor;
+
+            System.out.println("Enter a Author :");
+
+            try {
+                Statement statement = JDBC.main();
+                selectAuthor = sc.next();
+                String query = "SELECT * FROM book WHERE author = '" +selectAuthor+ "'";
+                books = statement.executeQuery(query);
+
+                boolean found = false; // Flag to track if any books were found
+                while (books.next()) {
+                    found = true;
+                    System.out.println(books.getString(1) + " " + books.getString(2));
+                }
+
+
+                if (!found) {
+                    System.out.println("No book found with the author: " + selectAuthor);
+                }
+            } catch (Exception e) {
+                System.out.println(e);
+            }
+        }else{
+            System.out.println("Choose a correct option !");
+            searchMenu();
+        }
+    }
+
 }

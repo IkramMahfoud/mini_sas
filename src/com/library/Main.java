@@ -1,9 +1,10 @@
 package com.library;
+import java.sql.SQLException;
 import java.util.Scanner;
 
 public class Main {
 
-    public static void main(String[] args){
+    public static void main(String[] args) throws SQLException {
         int selection;
         do{
             selection = mainMenu();
@@ -19,6 +20,12 @@ public class Main {
                     break;
                 case 4:
                     Book.displayAvailableBooks();
+                    break;
+                case 5:
+                    Book.searchMenu();
+                    break;
+                case 6:
+                    Loan.LoanMenu();
                     break;
 
                 case 0:
