@@ -1,8 +1,8 @@
 package com.library;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import com.mysql.cj.protocol.Resultset;
+
+import java.sql.*;
 import java.util.Date;
 import java.util.Scanner;
 
@@ -53,24 +53,21 @@ public class Book {
     }
 
 
+    //Stats
+    public void displayStats() {
+        ResultSet stats = null;
 
-    public static ResultSet displayAllBooks() {
-        ResultSet books = null;
         try {
             Statement statement = JDBC.main();
-            books = statement.executeQuery("SELECT * FROM book");
+            String query = "SELECT * FROM book WHERE status = 'available'";
+            stats = statement.executeQuery(query);
+            while(stats.next()){
+                System.out.println(stats.getString(1)+" "+stats.getString(2));
+            }
         } catch (Exception e) {
             System.out.println(e);
         }
-        return books;
     }
-
-    public static void main(String[] args) throws SQLException {
-           ResultSet books = displayAllBooks();
-           while(books.next()){
-               System.out.println(books.getInt(1)+" "+books.getString(2));
-           }
-       }
 
 
     //display books:
@@ -124,6 +121,9 @@ public class Book {
             e.printStackTrace();
         }
     }
+
+
+
 
 
     //delete Book:
@@ -187,31 +187,6 @@ public class Book {
         }
     }
 
-    //Stats
-    /*public void showStatistics() {
-        Book[] books;
-        int totalBooks = books.size();
-        int availableBooks = 0;
-        int borrowedBooks = 0;
-        int lostBooks = 0;
-
-        for (com.library.Book book : books) {
-            String status = book.getStatus();
-            if (status.equals("disponible")) {
-                availableBooks++;
-            } else if (status.equals("emprunté")) {
-                borrowedBooks++;
-            } else if (status.equals("perdu")) {
-                lostBooks++;
-            }
-        }
-
-        System.out.println("Statistiques de la bibliothèque :");
-        System.out.println("Nombre total de livres : " + totalBooks);
-        System.out.println("Livres disponibles : " + availableBooks);
-        System.out.println("Livres empruntés : " + borrowedBooks);
-        System.out.println("Livres perdus : " + lostBooks);
-    }*/
 
 
     //Search:
