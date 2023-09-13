@@ -27,6 +27,9 @@ public class Main {
                 case 6:
                     Loan.LoanMenu();
                     break;
+                case 7:
+                    Loan.Returnbook();
+                    break;
                 case 8:
                     Book.displayStats();
                     break;
