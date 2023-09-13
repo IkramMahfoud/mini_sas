@@ -54,19 +54,42 @@ public class Book {
 
 
     //Stats
-    public void displayStats() {
-        ResultSet stats = null;
+        public static void displayStats() {
+            ResultSet stats = null;
 
         try {
             Statement statement = JDBC.main();
-            String query = "SELECT * FROM book WHERE status = 'available'";
-            stats = statement.executeQuery(query);
-            while(stats.next()){
-                System.out.println(stats.getString(1)+" "+stats.getString(2));
+            String totalBooksQuery = "SELECT COUNT(*) as total FROM book";
+            stats = statement.executeQuery(totalBooksQuery);
+            if (stats.next()) {
+                int totalBooks = stats.getInt("total");
+                System.out.println("Total number of books : " + totalBooks);
             }
-        } catch (Exception e) {
-            System.out.println(e);
-        }
+
+            String availableBooksQuery = "SELECT COUNT(*) as available FROM book WHERE status = 'available'";
+            stats = statement.executeQuery(availableBooksQuery);
+            if (stats.next()) {
+                int availableBooks = stats.getInt("available");
+                System.out.println("Nombre de livres disponibles : " + availableBooks);
+            }
+
+            String borrowedBooksQuery = "SELECT COUNT(*) as loaned FROM book WHERE status = 'loaned'";
+            stats = statement.executeQuery(borrowedBooksQuery);
+            if (stats.next()) {
+                int borrowedBooks = stats.getInt("loaned");
+                System.out.println("Number of books borrowed : " + borrowedBooks);
+            }
+
+            String lostBooksQuery = "SELECT COUNT(*) as lost FROM book WHERE status = 'lost'";
+            stats = statement.executeQuery(lostBooksQuery);
+            if (stats.next()) {
+                int lostBooks = stats.getInt("lost");
+                System.out.println("Nombre de livres perdus : " + lostBooks);
+            }
+
+        }catch (Exception e) {
+        System.out.println(e);
+    }
     }
 
 
@@ -252,5 +275,6 @@ public class Book {
             searchMenu();
         }
     }
-
 }
+
+
